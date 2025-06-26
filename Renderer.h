@@ -3,14 +3,14 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
-#include "gl/freeglut.h"		// OpenGL header files
+#include "gl\freeglut.h"		// OpenGL header files
 #include <list>
 //#define TIME_CHECK_
 #define DEPTH_CALIB_
 #pragma warning(disable:4996)
 #define BLOCK 4
 #define READ_SIZE 110404//5060//110404
-#define scale 20
+// #define scale 200
 //#define TEST 14989
 //#define STATIC_
 
@@ -24,6 +24,14 @@ struct Vertex{
 	int index_2;
 	int index_3;
 };
+
+struct MMesh {
+    int V1, T1, N1; // Vertex 1: Vertex Index, Texture Index, Normal Index
+    int V2, T2, N2; // Vertex 2: Vertex Index, Texture Index, Normal Index
+    int V3, T3, N3; // Vertex 3: Vertex Index, Texture Index, Normal Index
+
+};
+
 
 // variables for GUI
 const float TRACKBALLSIZE = 0.8f;
@@ -40,10 +48,14 @@ GLint trans_x = 0;
 GLint trans_y = 0;
 GLint trans_z = 0;
 
+GLubyte mytexels[2048][2048][3];
+
 int add_depth_flag = 0;
 int model_flag = 0;
 int depth_display_flag = 0;
 int geodesic_skel[23][5] = { 0 };
+int trcon = 0;
+float zmin = 100000, zmax = -100000;
 
 int side_status[50] = { 0 };
 
@@ -55,6 +67,9 @@ BOOLEAN bTracked = false;
 bool checkt = false;
 Vertex *vertex;
 Vertex *vertex_color;
+MMesh *mymesh;
+Vertex *vertex_normals;
+
 
 bool recheck;
 
